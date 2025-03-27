@@ -34,7 +34,7 @@ class Perceptron(object):
 
     def predict(self, X):
         ### YOUR CODE HERE
-        preds = np.where(np.dot(X, self.W) >= 0, 1, 0)
+        preds = np.where(np.dot(X, self.W) >= 0, 1, -1)
         return preds
         
         ### END YOUR CODE
@@ -71,6 +71,7 @@ data = [line.strip().split(",") for line in lines[1:]]  # Skip the header
 # Convert to NumPy arrays
 data = np.array(data, dtype=float)  # Convert all values to float
 y = data[:, 0]  # First column as target
+y = np.where(y == 0, -1, 1)
 X = data[:, 1:]  # Rest as features
 scaler = StandardScaler()
 X = scaler.fit_transform(X)
@@ -81,5 +82,4 @@ perceptron.fit(X, y)
 
 # Make predictions and test accuracy
 predictions = perceptron.predict(X)
-print("Predictions:", predictions)
 testAccuracy(y, predictions)
