@@ -1,6 +1,6 @@
 import numpy as np
+import pandas as pd
 from sklearn.metrics import accuracy_score
-from sklearn.preprocessing import StandardScaler
 
 class SVM:
     def __init__(self, learning_rate=0.001, lambda_param=0.01, n_iters=1000):
@@ -37,44 +37,40 @@ def testAccuracy(y, predictedY):
 
 # Example usage:
 
-# Read and parse the file correctly
-file_path = "loan_data_preprocessed.csv"
-
-with open(file_path, "r") as file:
-    lines = file.readlines()
-
-# Extract header and data
-header = lines[0].strip().split(",")  # First line is column names
-data = [line.strip().split(",") for line in lines[1:]]  # Skip the header
+train = pd.read_csv('loan_data_train.csv')
+test = pd.read_csv('loan_data_test.csv')
 
 # Convert to NumPy arrays
-data = np.array(data, dtype=float)  # Convert all values to float
-y = data[:, 0]  # First column as target
-X = data[:, 1:]  # Rest as features
+train = np.array(train, dtype=float) # Convert all values to float
+test = np.array(test, dtype=float)
 
-# Convert labels: assuming original labels are 0 and 1, convert 0 to -1 and 1 remains 1
-y = np.where(y == 0, -1, 1)
+y_train = train[:, 0]  # First column as target
+X_train = train[:, 1:]  # Rest as features
 
-scaler = StandardScaler()
-X = scaler.fit_transform(X)
-
+y_test = test[:, 0] 
+X_test = test[:, 1:] 
 
 
 # Train SVM with revised hyperparameters
 def runSVMandLog(learning_rate, lambda_param, n_iters):
     with open("SVMoutputs.txt", "a") as file:
         svm = SVM(learning_rate, lambda_param, n_iters)
-        svm.fit(X, y)
-        predictions = svm.predict(X)
-        outputstr = "Accuracy of model based on learning rate, "+str(learning_rate)+", lambda param of "+str(lambda_param)+", and n_iters of "+str(n_iters)+": "+str(testAccuracy(y, predictions))
+        svm.fit(X_train, y_train)
+        trainpreds = svm.predict(X_train)
+        trainacc = testAccuracy(y_train, trainpreds)
+        outputstr = "Train accuracy of model based on learning rate, "+str(learning_rate)+", lambda param of "+str(lambda_param)+", and n_iters of "+str(n_iters)+": "+str(trainacc)
+        print(outputstr)
+        predictions = svm.predict(X_test)
+        outputstr = "Test accuracy of model based on learning rate, "+str(learning_rate)+", lambda param of "+str(lambda_param)+", and n_iters of "+str(n_iters)+": "+str(testAccuracy(y_test, predictions))
         print(outputstr)
         file.write(outputstr+"\n")
 
+
 def runSVM(learning_rate, lambda_param, n_iters):
     svm = SVM(learning_rate, lambda_param, n_iters)
-    svm.fit(X, y)
-    predictions = svm.predict(X)
-    outputstr = "Accuracy of model based on learning rate, "+str(learning_rate)+", lambda param of "+str(lambda_param)+", and n_iters of "+str(n_iters)+": "+str(testAccuracy(y, predictions))
+    svm.fit(X_train, y_train)
+    predictions = svm.predict(X_test)
+    outputstr = "Test accuracy of model based on learning rate, "+str(learning_rate)+", lambda param of "+str(lambda_param)+", and n_iters of "+str(n_iters)+": "+str(testAccuracy(y_test, predictions))
     print(outputstr)
 
 #runSVMandLog(0.0005, 0.005, 100)    #0.8634888888888889

@@ -12,3 +12,5 @@ Accuracy of model based on learning rate, 0.0005, lambda param of 0.005, and n_i
 Accuracy of model based on learning rate, 0.0003, lambda param of 0.003, and n_iters of 100: 0.8828666666666667
 Accuracy of model based on learning rate, 0.0002, lambda param of 0.002, and n_iters of 100: 0.8906
 Accuracy of model based on learning rate, 0.0001, lambda param of 0.001, and n_iters of 100: 0.8958666666666667
+Test accuracy of model based on learning rate, 0.0001, lambda param of 0.001, and n_iters of 100: 0.8956666666666667
+Test accuracy of model based on learning rate, 0.0001, lambda param of 0.001, and n_iters of 100: 0.8956666666666667
