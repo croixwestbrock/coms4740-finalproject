@@ -2,42 +2,39 @@ import numpy as np
 import pandas as pd
 import sys
 from sklearn.metrics import accuracy_score
-from sklearn.preprocessing import StandardScaler
 
 class Perceptron(object):
     
     def __init__(self, max_iter):
         self.max_iter = max_iter
+
     def fit(self, X, y):
         n_samples, n_features = X.shape
 
         w = np.zeros(n_features)
         
-        for epoch in range(self.max_iter):
-            error_count = 0  
-            for i in range(n_samples):
-                if y[i] * np.dot(w, X[i]) <= 0:
-                    w += y[i] * X[i]
-                    error_count += 1
-
-            if error_count == 0:
-                break
+        for maxiters in range(self.max_iter):
+            for t in range(n_samples): 
+                w_nextiter = w;
+                if np.sign(np.dot(w, X[t])) != y[t]: 
+                    w_nextiter = w + (y[t] * X[t]);
+                w = w_nextiter;
         
         self.W = w
         return self
+    
 
     def get_params(self):
         if self.W is None:
             print("Run fit first!")
             sys.exit(-1)
         return self.W
+    
 
     def predict(self, X):
-        ### YOUR CODE HERE
-        preds = np.where(np.dot(X, self.W) >= 0, 1, -1)
+        preds = np.sign(np.dot(X, self.W))
         return preds
         
-        ### END YOUR CODE
 
     def score(self, X, y):
         """Returns the mean accuracy on the given test data and labels.
@@ -53,40 +50,59 @@ class Perceptron(object):
         return np.mean(preds == y)
 
 
+def test_perceptron(max_iter, X_train, y_train, X_test, y_test):
 
-def testAccuracy(y, predictedY):
-    accuracy = accuracy_score(y, predictedY)
-    return accuracy
+    # train perceptron
+    model = Perceptron(max_iter)
+    model.fit(X_train, y_train)
+    train_acc = model.score(X_train, y_train)
+    W = model.get_params()
+
+    # test perceptron model
+    test_acc = model.score(X_test, y_test)
+
+    return W, train_acc, test_acc
+
+
+def test_accuracy(X_train, y_train, X_test, y_test):
+	max_iter = [10, 30, 50, 100, 200]
+	for i, m_iter in enumerate(max_iter):
+		_, train_acc, test_acc = test_perceptron(m_iter, X_train, y_train, 
+												 X_test, y_test)
+		print("Case %d: max iteration:%d  train accuracy:%f  test accuracy: %f."
+			  %(i+1, m_iter, train_acc, test_acc))
+
+	print("Accuracy testing done.")
 
 # Read and parse the file correctly
-file_path = "loan_data_preprocessed.csv"
+# file_path = "loan_data_preprocessed.csv"
 
-with open(file_path, "r") as file:
-    lines = file.readlines()
+# with open(file_path, "r") as file:
+#     lines = file.readlines()
 
-# Extract header and data
-header = lines[0].strip().split(",")  # First line is column names
-data = [line.strip().split(",") for line in lines[1:]]  # Skip the header
+# # Extract header and data
+# header = lines[0].strip().split(",")  # First line is column names
+# data = [line.strip().split(",") for line in lines[1:]]  # Skip the header
+train = pd.read_csv('loan_data_train.csv')
+test = pd.read_csv('loan_data_test.csv')
 
 # Convert to NumPy arrays
-data = np.array(data, dtype=float)  # Convert all values to float
-y = data[:, 0]  # First column as target
-y = np.where(y == 0, -1, 1)
-X = data[:, 1:]  # Rest as features
-scaler = StandardScaler()
-X = scaler.fit_transform(X)
+train = np.array(train, dtype=float) # Convert all values to float
+test = np.array(test, dtype=float)
 
-# Train Perceptron
-def runPerceptron(max_iter):
-    perceptron = Perceptron(max_iter)
-    perceptron.fit(X, y)
-    predictions = perceptron.predict(X)
-    print("Accuracy for max " + str(max_iter)+" iterations: "+ str(testAccuracy(y, predictions)))
+y_train = train[:, 0]  # First column as target
+X_train = train[:, 1:]  # Rest as features
 
-runPerceptron(1)
-runPerceptron(5)
-runPerceptron(10)
-runPerceptron(20)
-runPerceptron(50)
-runPerceptron(100)
-runPerceptron(500)
+y_test = test[:, 0] 
+X_test = test[:, 1:] 
+
+test_accuracy(X_train, y_train, X_test, y_test)
+
+# # Train Perceptron
+# perceptron = Perceptron(100)
+# perceptron.fit(X_train, y_train)
+
+# # Make predictions and test accuracy
+# predictions = perceptron.predict(X_test)
+# print("Predictions:", predictions)
+# testAccuracy(y_test, predictions)
