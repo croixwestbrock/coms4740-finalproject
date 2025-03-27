@@ -58,12 +58,12 @@ def runSVMandLog(learning_rate, lambda_param, n_iters):
         svm.fit(X_train, y_train)
         trainpreds = svm.predict(X_train)
         trainacc = testAccuracy(y_train, trainpreds)
-        outputstr = "Train accuracy of model based on learning rate, "+str(learning_rate)+", lambda param of "+str(lambda_param)+", and n_iters of "+str(n_iters)+": "+str(trainacc)
-        print(outputstr)
+        outputstr1 = "Train accuracy of model based on learning rate, "+str(learning_rate)+", lambda param of "+str(lambda_param)+", and n_iters of "+str(n_iters)+": "+str(trainacc)
+        print(outputstr1)
         predictions = svm.predict(X_test)
-        outputstr = "Test accuracy of model based on learning rate, "+str(learning_rate)+", lambda param of "+str(lambda_param)+", and n_iters of "+str(n_iters)+": "+str(testAccuracy(y_test, predictions))
-        print(outputstr)
-        file.write(outputstr+"\n")
+        outputstr2 = "Test accuracy of model based on learning rate, "+str(learning_rate)+", lambda param of "+str(lambda_param)+", and n_iters of "+str(n_iters)+": "+str(testAccuracy(y_test, predictions))
+        print(outputstr2)
+        file.write(outputstr1+"\n"+outputstr2+"\n")
 
 
 def runSVM(learning_rate, lambda_param, n_iters):
