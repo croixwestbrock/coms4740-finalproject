@@ -56,7 +56,7 @@ class Perceptron(object):
 
 def testAccuracy(y, predictedY):
     accuracy = accuracy_score(y, predictedY)
-    print("Accuracy of model:", accuracy)
+    return accuracy
 
 # Read and parse the file correctly
 file_path = "loan_data_preprocessed.csv"
@@ -77,9 +77,16 @@ scaler = StandardScaler()
 X = scaler.fit_transform(X)
 
 # Train Perceptron
-perceptron = Perceptron(100)
-perceptron.fit(X, y)
+def trainPerceptron(max_iter):
+    perceptron = Perceptron(max_iter)
+    perceptron.fit(X, y)
+    predictions = perceptron.predict(X)
+    print("Accuracy for max " + str(max_iter)+" iterations: "+ str(testAccuracy(y, predictions)))
 
-# Make predictions and test accuracy
-predictions = perceptron.predict(X)
-testAccuracy(y, predictions)
+trainPerceptron(1)
+trainPerceptron(5)
+trainPerceptron(10)
+trainPerceptron(20)
+trainPerceptron(50)
+trainPerceptron(100)
+trainPerceptron(500)
