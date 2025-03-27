@@ -32,7 +32,7 @@ class SVM:
 
 def testAccuracy(y, predictedY):
     accuracy = accuracy_score(y, predictedY)
-    print("Accuracy of model:", accuracy)
+    return accuracy
 
 
 # Example usage:
@@ -58,10 +58,38 @@ y = np.where(y == 0, -1, 1)
 scaler = StandardScaler()
 X = scaler.fit_transform(X)
 
-# Train SVM with revised hyperparameters
-svm = SVM(learning_rate=0.001, lambda_param=0.01, n_iters=100)
-svm.fit(X, y)
 
-# Make predictions and test accuracy
-predictions = svm.predict(X)
-testAccuracy(y, predictions)
+
+# Train SVM with revised hyperparameters
+def runSVMandLog(learning_rate, lambda_param, n_iters):
+    with open("SVMoutputs.txt", "a") as file:
+        svm = SVM(learning_rate, lambda_param, n_iters)
+        svm.fit(X, y)
+        predictions = svm.predict(X)
+        outputstr = "Accuracy of model based on learning rate, "+str(learning_rate)+", lambda param of "+str(lambda_param)+", and n_iters of "+str(n_iters)+": "+str(testAccuracy(y, predictions))
+        print(outputstr)
+        file.write(outputstr+"\n")
+
+def runSVM(learning_rate, lambda_param, n_iters):
+    svm = SVM(learning_rate, lambda_param, n_iters)
+    svm.fit(X, y)
+    predictions = svm.predict(X)
+    outputstr = "Accuracy of model based on learning rate, "+str(learning_rate)+", lambda param of "+str(lambda_param)+", and n_iters of "+str(n_iters)+": "+str(testAccuracy(y, predictions))
+    print(outputstr)
+
+#runSVMandLog(0.0005, 0.005, 100)    #0.8634888888888889
+#runSVMandLog(0.0003, 0.003, 100)    #0.8828666666666667
+runSVMandLog(0.0001, 0.001, 100)
+# print("Changing learning rate")
+#runSVM(0.002, 0.01, 100)      #0.7720666666666667
+#runSVM(0.0005, 0.01, 100)     
+#runSVM(0.001, 0.01, 100)      
+# print("Changing lambda param")
+#runSVM(0.001, 0.02, 100)      
+#runSVM(0.001, 0.005, 100)     
+#runSVM(0.001, 0.01, 100)      
+# print("Changing n_iter")
+#runSVM(0.001, 0.01, 50)       
+#runSVM(0.001, 0.01, 100)      
+#runSVM(0.001, 0.01, 200)      
+

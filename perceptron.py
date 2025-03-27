@@ -77,16 +77,16 @@ scaler = StandardScaler()
 X = scaler.fit_transform(X)
 
 # Train Perceptron
-def trainPerceptron(max_iter):
+def runPerceptron(max_iter):
     perceptron = Perceptron(max_iter)
     perceptron.fit(X, y)
     predictions = perceptron.predict(X)
     print("Accuracy for max " + str(max_iter)+" iterations: "+ str(testAccuracy(y, predictions)))
 
-trainPerceptron(1)
-trainPerceptron(5)
-trainPerceptron(10)
-trainPerceptron(20)
-trainPerceptron(50)
-trainPerceptron(100)
-trainPerceptron(500)
+runPerceptron(1)
+runPerceptron(5)
+runPerceptron(10)
+runPerceptron(20)
+runPerceptron(50)
+runPerceptron(100)
+runPerceptron(500)

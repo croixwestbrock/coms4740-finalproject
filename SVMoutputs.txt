@@ -1,0 +1,14 @@
+File to store outputs of different hyper parameter tests.
+Accuracy of model based on learning rate, 0.002, lambda param of 0.01, and n_iters of 100: 0.7720666666666667
+Accuracy of model based on learning rate, 0.0005, lambda param of 0.01, and n_iters of 100: 0.8579333333333333
+Accuracy of model based on learning rate, 0.001, lambda param of 0.01, and n_iters of 100: 0.8250444444444445
+Accuracy of model based on learning rate, 0.001, lambda param of 0.02, and n_iters of 100: 0.8133111111111111
+Accuracy of model based on learning rate, 0.001, lambda param of 0.005, and n_iters of 100: 0.8332888888888889
+Accuracy of model based on learning rate, 0.001, lambda param of 0.01, and n_iters of 100: 0.8250444444444445
+Accuracy of model based on learning rate, 0.001, lambda param of 0.01, and n_iters of 50: 0.8254222222222222
+Accuracy of model based on learning rate, 0.001, lambda param of 0.01, and n_iters of 100: 0.8250444444444445
+Accuracy of model based on learning rate, 0.001, lambda param of 0.01, and n_iters of 200: 0.8253555555555555
+Accuracy of model based on learning rate, 0.0005, lambda param of 0.005, and n_iters of 100: 0.8634888888888889
+Accuracy of model based on learning rate, 0.0003, lambda param of 0.003, and n_iters of 100: 0.8828666666666667
+Accuracy of model based on learning rate, 0.0002, lambda param of 0.002, and n_iters of 100: 0.8906
+Accuracy of model based on learning rate, 0.0001, lambda param of 0.001, and n_iters of 100: 0.8958666666666667
