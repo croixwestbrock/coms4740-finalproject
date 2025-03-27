@@ -1,32 +1,57 @@
 import numpy as np
 import pandas as pd
+import sys
 from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import StandardScaler
 
-class Perceptron:
-    def __init__(self, learning_rate=0.25, epochs=10000):
-        self.learning_rate = learning_rate
-        self.epochs = epochs
-        self.weights = None
-        self.bias = None
+class Perceptron(object):
     
+    def __init__(self, max_iter):
+        self.max_iter = max_iter
     def fit(self, X, y):
-        num_samples, num_features = X.shape
-        self.weights = np.zeros(num_features)
-        self.bias = 0
+        n_samples, n_features = X.shape
 
-        for _ in range(self.epochs):
-            for idx, x_i in enumerate(X):
-                prediction = self.predict_single(x_i)
-                update = self.learning_rate * (y[idx] - prediction)
-                self.weights += update * x_i
-                self.bias += update
-    
-    def predict_single(self, x):
-        return 1 if np.dot(x, self.weights) + self.bias >= 0 else 0
-    
+        w = np.zeros(n_features)
+        
+        for epoch in range(self.max_iter):
+            error_count = 0  
+            for i in range(n_samples):
+                if y[i] * np.dot(w, X[i]) <= 0:
+                    w += y[i] * X[i]
+                    error_count += 1
+
+            if error_count == 0:
+                break
+        
+        self.W = w
+        return self
+
+    def get_params(self):
+        if self.W is None:
+            print("Run fit first!")
+            sys.exit(-1)
+        return self.W
+
     def predict(self, X):
-        return np.array([self.predict_single(x) for x in X])
+        ### YOUR CODE HERE
+        preds = np.where(np.dot(X, self.W) >= 0, 1, 0)
+        return preds
+        
+        ### END YOUR CODE
+
+    def score(self, X, y):
+        """Returns the mean accuracy on the given test data and labels.
+
+        Args:
+            X: An array of shape [n_samples, n_features].
+            y: An array of shape [n_samples,]. Only contains 1 or -1.
+
+        Returns:
+            score: An float. Mean accuracy of self.predict(X) wrt. y.
+        """
+        preds = self.predict(X)
+        return np.mean(preds == y)
+
 
 
 def testAccuracy(y, predictedY):
@@ -51,7 +76,7 @@ scaler = StandardScaler()
 X = scaler.fit_transform(X)
 
 # Train Perceptron
-perceptron = Perceptron(learning_rate=0.1, epochs=1)
+perceptron = Perceptron(100)
 perceptron.fit(X, y)
 
 # Make predictions and test accuracy
