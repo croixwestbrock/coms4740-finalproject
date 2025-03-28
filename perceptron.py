@@ -68,7 +68,7 @@ def test_perceptron(max_iter, X_train, y_train, X_test, y_test):
 
 
 def test_accuracy(X_train, y_train, X_test, y_test):
-	max_iter = [10, 30, 50, 100, 200]
+	max_iter = [10, 30, 50, 100, 200,1000]
 	for i, m_iter in enumerate(max_iter):
 		_, train_acc, test_acc, precision = test_perceptron(m_iter, X_train, y_train, 
 												 X_test, y_test)

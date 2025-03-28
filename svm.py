@@ -113,6 +113,63 @@ def baggingSVM(n_models, p_data, learning_rate, lambda_param, n_iters):
 
     finalprediction = np.where(mean_votes < 0, -1, 1)
     print("Bagged test accuracy: "+ str(testAccuracy(y_test, finalprediction)))
-baggingSVM(10,0.1,0.001, 0.001, 12)
+    precision = precision_score(y_test, predictions)
+    outputstr3 = f"Precision: {precision}"
+    print(outputstr3)
 
+def boostingSVM(n_models, learning_rate, lambda_param, n_iters):
+    n_samples = X_train.shape[0]
+    # Initialize uniform sample weights
+    sample_weights = np.ones(n_samples) / n_samples
+    alphas = []   # Model weights in the final classifier
+    models = []   # List to store trained SVM models
+    
+    for t in range(n_models):
+        # Sample training data with replacement according to sample_weights
+        indices = np.random.choice(np.arange(n_samples), size=n_samples, replace=True, p=sample_weights)
+        subsetX = X_train[indices]
+        subsetY = y_train[indices]
+        
+        # Train SVM on the weighted sample
+        svm = SVM(learning_rate, lambda_param, n_iters)
+        svm.fit(subsetX, subsetY)
+        
+        # Get predictions on the entire training set
+        predictions_train = svm.predict(X_train)
+        
+        # Calculate the weighted error rate
+        incorrect = (predictions_train != y_train)
+        error = np.sum(sample_weights * incorrect) / np.sum(sample_weights)
+        
+        # Avoid division by zero or extreme values
+        error = np.clip(error, 1e-10, 0.5)
+        
+        # Compute the model's weight (alpha)
+        alpha = 0.5 * np.log((1 - error) / error)
+        alphas.append(alpha)
+        models.append(svm)
+        
+        # Update sample weights: increase weight for misclassified examples
+        sample_weights *= np.exp(-alpha * y_train * predictions_train)
+        sample_weights /= np.sum(sample_weights)  # Normalize
+        
+        # For monitoring, check test accuracy at each iteration
+        test_pred = svm.predict(X_test)
+        print(f"Iteration {t+1}, Weighted error: {error:.4f}, Alpha: {alpha:.4f}, Test accuracy: {testAccuracy(y_test, test_pred)}")
+        
+    
+    # Final prediction: sum of weighted predictions from each model
+    agg_preds = np.zeros(len(y_test))
+    for alpha, model in zip(alphas, models):
+        agg_preds += alpha * model.predict(X_test)
+    
+    final_predictions = np.where(agg_preds >= 0, 1, -1)
+    print("Boosted test accuracy:")
+    print(str(testAccuracy(y_test, final_predictions)))
+    
+    # Optional: Print precision if needed
+    precision = precision_score(y_test, final_predictions)
+    print(f"Precision: {precision:.4f}")
+
+boostingSVM(8,0.0001, 0.001, 100)
 
