@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from sklearn.metrics import accuracy_score
-from sklearn.metrics import precision_score
+from scipy.stats import mode
 
 class SVM:
     def __init__(self, learning_rate=0.001, lambda_param=0.01, n_iters=1000):
@@ -79,7 +79,7 @@ def runSVM(learning_rate, lambda_param, n_iters):
 
 #runSVMandLog(0.0005, 0.005, 100)    #0.8634888888888889
 #runSVMandLog(0.0003, 0.003, 100)    #0.8828666666666667
-runSVMandLog(0.0001, 0.001, 100)
+#runSVMandLog(0.0001, 0.001, 100)
 # print("Changing learning rate")
 #runSVM(0.002, 0.01, 100)      #0.7720666666666667
 #runSVM(0.0005, 0.01, 100)     
@@ -91,5 +91,28 @@ runSVMandLog(0.0001, 0.001, 100)
 # print("Changing n_iter")
 #runSVM(0.001, 0.01, 50)       
 #runSVM(0.001, 0.01, 100)      
-#runSVM(0.001, 0.01, 200)      
+#runSVM(0.001, 0.01, 200)     
+def baggingSVM(n_models, p_data, learning_rate, lambda_param, n_iters):
+    finalpredictions = np.zeros((n_models, len(y_test)))
+    for i in range(n_models):
+        # Compute number of samples to select
+        num_samples = int(p_data * X_train.shape[0])
+        # Randomly select indices with replacement
+        indices = np.random.randint(0, X_train.shape[0], size=num_samples)     
+        # Create subset using selected indices
+        subsetX = X_train[indices]
+        subsetY = y_train[indices]
+        svm = SVM(learning_rate, lambda_param, n_iters)
+        svm.fit(subsetX, subsetY)
+        predictions = svm.predict(X_test)
+        outputstr = "Test accuracy of model based on learning rate, "+str(learning_rate)+", lambda param of "+str(lambda_param)+", and n_iters of "+str(n_iters)+": "+str(testAccuracy(y_test, predictions))
+        print(outputstr)
+        finalpredictions[i]= predictions
+    # Compute the mean of votes along axis=0 (across models for each sample)
+    mean_votes = np.mean(finalpredictions, axis=0)
+
+    finalprediction = np.where(mean_votes < 0, -1, 1)
+    print("Bagged test accuracy: "+ str(testAccuracy(y_test, finalprediction)))
+baggingSVM(10,0.1,0.001, 0.001, 12)
+
 
