@@ -1,6 +1,7 @@
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import precision_score
 
 train = pd.read_csv('loan_data_train.csv')
 test = pd.read_csv('loan_data_test.csv')
@@ -19,6 +20,8 @@ train_acc = accuracy_score(y_train, train_preds)
 
 test_preds = model.predict(X_test)
 test_acc = accuracy_score(y_test, test_preds)
+precision = precision_score(y_test, test_preds)
 
 print(f"Training Accuracy: {train_acc}")
 print(f"Testing Accuracy: {test_acc}")
+print(f"Precision: {precision}")

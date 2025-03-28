@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import precision_score
 
 class SVM:
     def __init__(self, learning_rate=0.001, lambda_param=0.01, n_iters=1000):
@@ -63,7 +64,10 @@ def runSVMandLog(learning_rate, lambda_param, n_iters):
         predictions = svm.predict(X_test)
         outputstr2 = "Test accuracy of model based on learning rate, "+str(learning_rate)+", lambda param of "+str(lambda_param)+", and n_iters of "+str(n_iters)+": "+str(testAccuracy(y_test, predictions))
         print(outputstr2)
-        file.write(outputstr1+"\n"+outputstr2+"\n\n")
+        precision = precision_score(y_test, predictions)
+        outputstr3 = f"Precision: {precision}"
+        print(outputstr3)
+        file.write(outputstr1+"\n"+outputstr2+"\n"+outputstr3+"\n\n")
 
 
 def runSVM(learning_rate, lambda_param, n_iters):

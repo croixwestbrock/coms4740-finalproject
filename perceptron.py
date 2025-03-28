@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import sys
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import precision_score
 
 class Perceptron(object):
     
@@ -60,17 +61,20 @@ def test_perceptron(max_iter, X_train, y_train, X_test, y_test):
 
     # test perceptron model
     test_acc = model.score(X_test, y_test)
+    test_preds = model.predict(X_test)
+    precision = precision_score(y_test, test_preds)
 
-    return W, train_acc, test_acc
+    return W, train_acc, test_acc, precision
 
 
 def test_accuracy(X_train, y_train, X_test, y_test):
 	max_iter = [10, 30, 50, 100, 200]
 	for i, m_iter in enumerate(max_iter):
-		_, train_acc, test_acc = test_perceptron(m_iter, X_train, y_train, 
+		_, train_acc, test_acc, precision = test_perceptron(m_iter, X_train, y_train, 
 												 X_test, y_test)
-		print("Case %d: max iteration:%d  train accuracy:%f  test accuracy: %f."
-			  %(i+1, m_iter, train_acc, test_acc))
+
+		print("Case %d: max iteration:%d  train accuracy:%f  test accuracy: %f  precision: %f."
+			  %(i+1, m_iter, train_acc, test_acc, precision))
 
 	print("Accuracy testing done.")
 
