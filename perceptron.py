@@ -78,17 +78,19 @@ def test_accuracy(X_train, y_train, X_test, y_test):
 
 	print("Accuracy testing done.")
 
-# Read and parse the file correctly
-# file_path = "loan_data_preprocessed.csv"
 
-# with open(file_path, "r") as file:
-#     lines = file.readlines()
-
-# # Extract header and data
-# header = lines[0].strip().split(",")  # First line is column names
-# data = [line.strip().split(",") for line in lines[1:]]  # Skip the header
+# For manually selected dataset:
 train = pd.read_csv('loan_data_train.csv')
 test = pd.read_csv('loan_data_test.csv')
+
+# For forward selection dataset:
+#train = pd.read_csv('fwd_train.csv')
+#test = pd.read_csv('fwd_test.csv')
+
+# For PCA dataset:
+#train = pd.read_csv('pca_train.csv')
+#test = pd.read_csv('pca_test.csv')
+
 
 # Convert to NumPy arrays
 train = np.array(train, dtype=float) # Convert all values to float
