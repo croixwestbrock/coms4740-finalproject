@@ -3,6 +3,7 @@ import pandas as pd
 import sys
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import precision_score
+from sklearn.metrics import confusion_matrix
 
 class Perceptron(object):
     
@@ -16,10 +17,12 @@ class Perceptron(object):
         
         for maxiters in range(self.max_iter):
             for t in range(n_samples): 
-                w_nextiter = w;
+                w_nextiter = w
                 if np.sign(np.dot(w, X[t])) != y[t]: 
-                    w_nextiter = w + (y[t] * X[t]);
-                w = w_nextiter;
+                    weight_multiplier = 4 if y[t] == 1 else 1
+                    w_nextiter = w + weight_multiplier * y[t] * X[t]
+                    #w_nextiter = w + (y[t] * X[t])
+                w = w_nextiter
         
         self.W = w
         return self
@@ -60,21 +63,24 @@ def test_perceptron(max_iter, X_train, y_train, X_test, y_test):
     W = model.get_params()
 
     # test perceptron model
-    test_acc = model.score(X_test, y_test)
+    #test_acc = model.score(X_test, y_test)
     test_preds = model.predict(X_test)
+    test_acc = accuracy_score(y_test, test_preds)
     precision = precision_score(y_test, test_preds)
+
+    cm = confusion_matrix(y_test, test_preds, labels=[1, -1])
+    print(cm)
 
     return W, train_acc, test_acc, precision
 
 
 def test_accuracy(X_train, y_train, X_test, y_test):
-	max_iter = [10, 30, 50, 100, 200,1000]
+	max_iter = [10, 30, 50, 100, 200, 1000]
 	for i, m_iter in enumerate(max_iter):
-		_, train_acc, test_acc, precision = test_perceptron(m_iter, X_train, y_train, 
-												 X_test, y_test)
+		_, train_acc, test_acc, precision = test_perceptron(m_iter, X_train, y_train, X_test, y_test)
 
-		print("Case %d: max iteration:%d  train accuracy:%f  test accuracy: %f  precision: %f."
-			  %(i+1, m_iter, train_acc, test_acc, precision))
+		print("Case %d: max iteration:%d  train accuracy:%f  test accuracy: %f  precision: %f." %(i+1, m_iter, train_acc, test_acc, precision))
+        
 
 	print("Accuracy testing done.")
 
@@ -90,7 +96,6 @@ test = pd.read_csv('loan_data_test.csv')
 # For PCA dataset:
 #train = pd.read_csv('pca_train.csv')
 #test = pd.read_csv('pca_test.csv')
-
 
 # Convert to NumPy arrays
 train = np.array(train, dtype=float) # Convert all values to float

@@ -8,12 +8,12 @@ train = pd.read_csv('loan_data_train.csv')
 test = pd.read_csv('loan_data_test.csv')
 
 # For forward selection dataset:
-#train = pd.read_csv('fwd_train.csv')
-#test = pd.read_csv('fwd_test.csv')
+train = pd.read_csv('fwd_train.csv')
+test = pd.read_csv('fwd_test.csv')
 
 # For PCA dataset:
-#train = pd.read_csv('pca_train.csv')
-#test = pd.read_csv('pca_test.csv')
+train = pd.read_csv('pca_train.csv')
+test = pd.read_csv('pca_test.csv')
 
 y_train = train.iloc[:, 0] 
 X_train = train.iloc[:, 1:]  
