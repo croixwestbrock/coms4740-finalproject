@@ -43,12 +43,12 @@ train = pd.read_csv('loan_data_train.csv')
 test = pd.read_csv('loan_data_test.csv')
 
 # For forward selection dataset:
-#train = pd.read_csv('fwd_train.csv')
-#test = pd.read_csv('fwd_test.csv')
+# train = pd.read_csv('fwd_train.csv')
+# test = pd.read_csv('fwd_test.csv')
 
 # For PCA dataset:
-#train = pd.read_csv('pca_train.csv')
-#test = pd.read_csv('pca_test.csv')
+# train = pd.read_csv('pca_train.csv')
+# test = pd.read_csv('pca_test.csv')
 
 # Convert to NumPy arrays
 train = np.array(train, dtype=float) # Convert all values to float
@@ -88,11 +88,11 @@ def runSVM(learning_rate, lambda_param, n_iters):
 
 #runSVMandLog(0.0005, 0.005, 100)    #0.8634888888888889
 #runSVMandLog(0.0003, 0.003, 100)    #0.8828666666666667
-#runSVMandLog(0.0001, 0.001, 100)
+runSVMandLog(0.0001, 0.001, 100)
 # print("Changing learning rate")
 #runSVM(0.002, 0.01, 100)      #0.7720666666666667
 #runSVM(0.0005, 0.01, 100)     
-#runSVM(0.001, 0.01, 100)      
+#runSVM(0.0001, 0.001, 100)      
 # print("Changing lambda param")
 #runSVM(0.001, 0.02, 100)      
 #runSVM(0.001, 0.005, 100)     
@@ -180,5 +180,5 @@ def boostingSVM(n_models, learning_rate, lambda_param, n_iters):
     precision = precision_score(y_test, final_predictions)
     print(f"Precision: {precision:.4f}")
 
-boostingSVM(8,0.0001, 0.001, 100)
+#boostingSVM(8,0.0001, 0.001, 100)
 

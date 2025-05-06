@@ -33,3 +33,15 @@ Train accuracy of model based on learning rate, 0.0001, lambda param of 0.001, a
 Test accuracy of model based on learning rate, 0.0001, lambda param of 0.001, and n_iters of 100: 0.8956666666666667
 Precision: 0.7787798408488064
 
+Train accuracy of model based on learning rate, 0.0001, lambda param of 0.001, and n_iters of 100: 0.8924444444444445
+Test accuracy of model based on learning rate, 0.0001, lambda param of 0.001, and n_iters of 100: 0.8933333333333333
+Precision: 0.7721987315010571
+
+Train accuracy of model based on learning rate, 0.0001, lambda param of 0.001, and n_iters of 100: 0.8956111111111111
+Test accuracy of model based on learning rate, 0.0001, lambda param of 0.001, and n_iters of 100: 0.8956666666666667
+Precision: 0.7787798408488064
+
+Train accuracy of model based on learning rate, 0.0001, lambda param of 0.001, and n_iters of 100: 0.893
+Test accuracy of model based on learning rate, 0.0001, lambda param of 0.001, and n_iters of 100: 0.8963333333333333
+Precision: 0.7754038561750912
+

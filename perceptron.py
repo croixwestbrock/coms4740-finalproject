@@ -75,7 +75,7 @@ def test_perceptron(max_iter, X_train, y_train, X_test, y_test):
 
 
 def test_accuracy(X_train, y_train, X_test, y_test):
-	max_iter = [10, 30, 50, 100, 200, 1000]
+	max_iter = [100]#[10, 30, 50, 100, 200]
 	for i, m_iter in enumerate(max_iter):
 		_, train_acc, test_acc, precision = test_perceptron(m_iter, X_train, y_train, X_test, y_test)
 
@@ -90,12 +90,12 @@ train = pd.read_csv('loan_data_train.csv')
 test = pd.read_csv('loan_data_test.csv')
 
 # For forward selection dataset:
-#train = pd.read_csv('fwd_train.csv')
-#test = pd.read_csv('fwd_test.csv')
+# train = pd.read_csv('fwd_train.csv')
+# test = pd.read_csv('fwd_test.csv')
 
 # For PCA dataset:
-#train = pd.read_csv('pca_train.csv')
-#test = pd.read_csv('pca_test.csv')
+# train = pd.read_csv('pca_train.csv')
+# test = pd.read_csv('pca_test.csv')
 
 # Convert to NumPy arrays
 train = np.array(train, dtype=float) # Convert all values to float

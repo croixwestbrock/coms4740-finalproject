@@ -43,10 +43,10 @@ def test_neural_net(hidden_layers, lr, max_iter, X_train, y_train, X_test, y_tes
 
 def test_accuracy(X_train, y_train, X_test, y_test):
     settings = [
-        ((50,), 0.001, 300),
-        ((100,), 0.01, 500),
-        ((64, 32), 0.001, 300),
-        ((128, 64, 32), 0.0005, 500),
+        ((50,), 0.001, 300)#,
+        #((100,), 0.01, 500),
+        #((64, 32), 0.001, 300),
+        #((128, 64, 32), 0.0005, 500),
     ]
 
     for i, (hidden_layers, lr, max_iter) in enumerate(settings):
@@ -57,8 +57,17 @@ def test_accuracy(X_train, y_train, X_test, y_test):
 
 
 # === Load and prepare data ===
+# For manually selected dataset:
 train = pd.read_csv('loan_data_train.csv')
 test = pd.read_csv('loan_data_test.csv')
+
+# For forward selection dataset:
+# train = pd.read_csv('fwd_train.csv')
+# test = pd.read_csv('fwd_test.csv')
+
+# For PCA dataset:
+train = pd.read_csv('pca_train.csv')
+test = pd.read_csv('pca_test.csv')
 
 train = np.array(train, dtype=float)
 test = np.array(test, dtype=float)
